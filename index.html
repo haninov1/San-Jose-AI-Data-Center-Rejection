@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Email Your Rep">
+    <meta name="theme-color" content="#007aff">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📧</text></svg>">
+    <title>Email Your San Jose Councilmember</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            padding: 40px 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1a1a1a;
+            font-size: 28px;
+            margin-bottom: 4px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 16px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 15px;
+        }
+        select {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            background: white;
+            appearance: none;
+            cursor: pointer;
+            margin-bottom: 20px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%23666'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+        }
+        select:focus {
+            outline: none;
+            border-color: #007aff;
+        }
+        .info-box {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            display: none;
+        }
+        .info-box.visible {
+            display: block;
+        }
+        .info-box h3 {
+            color: #1a1a1a;
+            margin-bottom: 4px;
+        }
+        .info-box .email {
+            color: #007aff;
+            font-size: 14px;
+            word-break: break-all;
+        }
+        .email-button {
+            display: inline-block;
+            width: 100%;
+            padding: 16px;
+            background: #007aff;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 18px;
+            margin-top: 15px;
+            transition: background 0.2s;
+        }
+        .email-button:hover {
+            background: #005bbf;
+        }
+        .note {
+            color: #888;
+            font-size: 13px;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        /* Notification Section */
+        .notification-section {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid #eee;
+        }
+        .notification-section h4 {
+            color: #1a1a1a;
+            margin-bottom: 6px;
+            font-size: 16px;
+        }
+        .notification-section .sub-label {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        /* Frequency Selection */
+        .frequency-group {
+            margin: 12px 0 16px 0;
+        }
+        .frequency-group label {
+            font-weight: 500;
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 6px;
+        }
+        .frequency-options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .frequency-option {
+            flex: 1;
+            min-width: 80px;
+            padding: 12px 8px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            background: white;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+            font-size: 14px;
+            color: #555;
+        }
+        .frequency-option:hover {
+            border-color: #007aff;
+            background: #f0f7ff;
+        }
+        .frequency-option.selected {
+            border-color: #007aff;
+            background: #007aff;
+            color: white;
+        }
+        .frequency-option .sub {
+            display: block;
+            font-size: 10px;
+            font-weight: 400;
+            opacity: 0.7;
+            margin-top: 2px;
+        }
+        .frequency-option.selected .sub {
+            opacity: 0.9;
+        }
+        
+        .notification-btn {
+            display: inline-block;
+            width: 100%;
+            padding: 14px;
+            background: #34a853;
+            color: white;
+            text-align: center;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 8px;
+        }
+        .notification-btn:hover {
+            background: #2d8f47;
+        }
+        .notification-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .notification-btn.secondary {
+            background: #ff6b35;
+        }
+        .notification-btn.secondary:hover {
+            background: #e55a2b;
+        }
+        
+        .status-message {
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            display: none;
+        }
+        .status-message.success {
+            display: block;
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        .status-message.error {
+            display: block;
+            background: #ffebee;
+            color: #c62828;
+        }
+        .status-message.info {
+            display: block;
+            background: #e3f2fd;
+            color: #005bbf;
+        }
+        .status-message.warning {
+            display: block;
+            background: #fff3e0;
+            color: #e65100;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            text-align: center;
+            color: #999;
+            font-size: 13px;
+        }
+        
+        .setup-instructions {
+            background: #f0f7ff;
+            border-radius: 10px;
+            padding: 16px;
+            margin: 12px 0;
+            font-size: 14px;
+            display: none;
+        }
+        .setup-instructions.visible {
+            display: block;
+        }
+        .setup-instructions ol {
+            padding-left: 20px;
+            margin: 8px 0;
+        }
+        .setup-instructions li {
+            margin: 6px 0;
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 480px) {
+            .container {
+                padding: 24px 16px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            .frequency-option {
+                min-width: 70px;
+                padding: 10px 6px;
+                font-size: 13px;
+            }
+        }
+        
+        .pwa-banner {
+            background: #fff8e1;
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin: 15px 0 10px 0;
+            font-size: 14px;
+            color: #e65100;
+            display: none;
+            border: 1px solid #ffecb3;
+        }
+        .pwa-banner.visible {
+            display: block;
+        }
+        .pwa-banner strong {
+            color: #bf360c;
+        }
+        .pwa-banner .icon {
+            font-size: 20px;
+            margin-right: 8px;
+        }
+        
+        .frequency-display {
+            background: #e8f5e9;
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin: 12px 0;
+            font-size: 14px;
+            color: #2e7d32;
+            display: none;
+        }
+        .frequency-display.visible {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>📧 Email Your Councilmember</h1>
+    <p class="subtitle">Tell San Jose: <strong>No AI Data Centers</strong></p>
+
+    <!-- PWA Install Banner -->
+    <div id="pwaBanner" class="pwa-banner">
+        <span class="icon">📱</span>
+        <strong>Get Daily Reminders!</strong> 
+        Tap <strong>Share</strong> → <strong>Add to Home Screen</strong> to get notifications.
+    </div>
+
+    <!-- District Selection -->
+    <label for="districtSelect">Select your district:</label>
+    <select id="districtSelect">
+        <option value="">-- Choose your district --</option>
+        <option value="district1@sanjoseca.gov|Rosemary Kamei|1">District 1 - Rosemary Kamei</option>
+        <option value="district2@sanjoseca.gov|Pamela Campos|2">District 2 - Pamela Campos</option>
+        <option value="district3@sanjoseca.gov|Anthony Tordillos|3">District 3 - Anthony Tordillos</option>
+        <option value="district4@sanjoseca.gov|David Cohen|4">District 4 - David Cohen</option>
+        <option value="district5@sanjoseca.gov|Peter Ortiz|5">District 5 - Peter Ortiz</option>
+        <option value="district6@sanjoseca.gov|Michael Mulcahy|6">District 6 - Michael Mulcahy</option>
+        <option value="district7@sanjoseca.gov|Bien Doan|7">District 7 - Bien Doan</option>
+        <option value="district8@sanjoseca.gov|Domingo Candelas|8">District 8 - Domingo Candelas</option>
+        <option value="district9@sanjoseca.gov|Pam Foley|9">District 9 - Pam Foley</option>
+        <option value="district10@sanjoseca.gov|George Casey|10">District 10 - George Casey</option>
+    </select>
+
+    <!-- Info Box -->
+    <div id="infoBox" class="info-box">
+        <h3 id="repName">Councilmember Name</h3>
+        <p class="email" id="repEmail">email@example.com</p>
+        <p style="margin-top: 8px; font-size: 14px; color: #555;">
+            <span class="badge">✅ Your Representative</span>
+        </p>
+
+        <!-- Email Button -->
+        <a href="#" id="emailButton" class="email-button">✉️ Send Email Now</a>
+        <p class="note">This will open your default email app. Just tap Send!</p>
+    </div>
+
+    <!-- Notification Section -->
+    <div class="notification-section" id="notificationSection">
+        <h4>🔔 Get Reminders</h4>
+        <p class="sub-label">Choose how often you want to be reminded to send this email.</p>
+
+        <!-- Frequency Selection -->
+        <div class="frequency-group">
+            <label>How often should we remind you?</label>
+            <div class="frequency-options" id="frequencyOptions">
+                <div class="frequency-option selected" data-value="daily">
+                    Daily
+                    <span class="sub">Every day</span>
+                </div>
+                <div class="frequency-option" data-value="weekly">
+                    Weekly
+                    <span class="sub">Every week</span>
+                </div>
+                <div class="frequency-option" data-value="monthly">
+                    Monthly
+                    <span class="sub">Every month</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Frequency Display (shows selected) -->
+        <div id="frequencyDisplay" class="frequency-display">
+            🔔 You will receive <strong id="freqLabel">daily</strong> reminders at <strong>9:00 AM</strong>.
+        </div>
+
+        <!-- Setup Instructions -->
+        <div id="setupInstructions" class="setup-instructions">
+            <strong>📱 To get reminders:</strong>
+            <ol>
+                <li>Tap <strong>Share</strong> <span id="shareIcon">⬆️</span> → <strong>Add to Home Screen</strong></li>
+                <li>Open the app from your Home Screen</li>
+                <li>Tap <strong>"Enable Notifications"</strong> below</li>
+            </ol>
+            <p style="font-size:13px; color:#666; margin-top:8px;">
+                ⚠️ You must complete step 1 for notifications to work on iPhone.
+            </p>
+        </div>
+
+        <button id="notifyBtn" class="notification-btn" disabled>
+            🔔 Enable Notifications
+        </button>
+        
+        <div id="statusMessage" class="status-message"></div>
+        
+        <!-- Reminder info -->
+        <div style="margin-top: 12px; font-size: 13px; color: #888; text-align: center;">
+            Notifications arrive at <strong>9:00 AM</strong> on your chosen schedule.
+            Tap them to open this page with your email ready to send.
+        </div>
+    </div>
+
+    <div class="footer">
+        Made for San Jose residents • No account needed • Free to use
+    </div>
+</div>
+
+<script>
+    // =============================================
+    // DISTRICT DATA
+    // =============================================
+    const districtData = {
+        'district1@sanjoseca.gov|Rosemary Kamei|1': { email: 'district1@sanjoseca.gov', name: 'Rosemary Kamei', district: '1' },
+        'district2@sanjoseca.gov|Pamela Campos|2': { email: 'district2@sanjoseca.gov', name: 'Pamela Campos', district: '2' },
+        'district3@sanjoseca.gov|Anthony Tordillos|3': { email: 'district3@sanjoseca.gov', name: 'Anthony Tordillos', district: '3' },
+        'district4@sanjoseca.gov|David Cohen|4': { email: 'district4@sanjoseca.gov', name: 'David Cohen', district: '4' },
+        'district5@sanjoseca.gov|Peter Ortiz|5': { email: 'district5@sanjoseca.gov', name: 'Peter Ortiz', district: '5' },
+        'district6@sanjoseca.gov|Michael Mulcahy|6': { email: 'district6@sanjoseca.gov', name: 'Michael Mulcahy', district: '6' },
+        'district7@sanjoseca.gov|Bien Doan|7': { email: 'district7@sanjoseca.gov', name: 'Bien Doan', district: '7' },
+        'district8@sanjoseca.gov|Domingo Candelas|8': { email: 'district8@sanjoseca.gov', name: 'Domingo Candelas', district: '8' },
+        'district9@sanjoseca.gov|Pam Foley|9': { email: 'district9@sanjoseca.gov', name: 'Pam Foley', district: '9' },
+        'district10@sanjoseca.gov|George Casey|10': { email: 'district10@sanjoseca.gov', name: 'George Casey', district: '10' }
+    };
+
+    // =============================================
+    // ELEMENTS
+    // =============================================
+    const select = document.getElementById('districtSelect');
+    const infoBox = document.getElementById('infoBox');
+    const repName = document.getElementById('repName');
+    const repEmail = document.getElementById('repEmail');
+    const emailButton = document.getElementById('emailButton');
+    const notifyBtn = document.getElementById('notifyBtn');
+    const statusMessage = document.getElementById('statusMessage');
+    const setupInstructions = document.getElementById('setupInstructions');
+    const pwaBanner = document.getElementById('pwaBanner');
+    const frequencyOptions = document.querySelectorAll('.frequency-option');
+    const frequencyDisplay = document.getElementById('frequencyDisplay');
+    const freqLabel = document.getElementById('freqLabel');
+
+    let currentData = null;
+    let currentMailtoLink = '';
+    let selectedFrequency = 'daily';
+
+    // Frequency labels for display
+    const freqLabels = {
+        'daily': 'daily',
+        'weekly': 'weekly',
+        'monthly': 'monthly'
+    };
+
+    // =============================================
+    // FREQUENCY SELECTION
+    // =============================================
+    frequencyOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            // Remove selected from all
+            frequencyOptions.forEach(opt => opt.classList.remove('selected'));
+            // Add selected to clicked
+            this.classList.add('selected');
+            // Store frequency
+            selectedFrequency = this.dataset.value;
+            // Update display
+            updateFrequencyDisplay();
+            // Save to localStorage
+            localStorage.setItem('notificationFrequency', selectedFrequency);
+            
+            // If notifications are already enabled, update the schedule
+            if (Notification.permission === 'granted') {
+                updateNotificationSchedule();
+            }
+        });
+    });
+
+    // Restore frequency from localStorage
+    const savedFrequency = localStorage.getItem('notificationFrequency');
+    if (savedFrequency) {
+        selectedFrequency = savedFrequency;
+        frequencyOptions.forEach(opt => {
+            if (opt.dataset.value === savedFrequency) {
+                opt.classList.add('selected');
+            } else {
+                opt.classList.remove('selected');
+            }
+        });
+    }
+    updateFrequencyDisplay();
+
+    function updateFrequencyDisplay() {
+        const labels = {
+            'daily': 'daily',
+            'weekly': 'weekly',
+            'monthly': 'monthly'
+        };
+        freqLabel.textContent = labels[selectedFrequency] || 'daily';
+        frequencyDisplay.classList.add('visible');
+    }
+
+    // =============================================
+    // BUILD MAILTO LINK
+    // =============================================
+    function buildMailtoLink(data) {
+        const subject = encodeURIComponent('URGENT: AI Data Centers should not be in San Jose');
+        const body = encodeURIComponent(
+            `Dear Councilmember ${data.name},\n\n` +
+            `I am a resident of District ${data.district}.\n\n` +
+            `[Please write your message here]\n\n` +
+            `Sincerely,\n` +
+            `A Concerned Resident of San Jose\n` +
+            `District ${data.district}`
+        );
+        return `mailto:${data.email}?subject=${subject}&body=${body}`;
+    }
+
+    // =============================================
+    // DISTRICT SELECTION
+    // =============================================
+    select.addEventListener('change', function() {
+        const selectedValue = this.value;
+
+        if (!selectedValue) {
+            infoBox.classList.remove('visible');
+            return;
+        }
+
+        const data = districtData[selectedValue];
+        if (!data) return;
+        currentData = data;
+        currentMailtoLink = buildMailtoLink(data);
+
+        repName.textContent = data.name;
+        repEmail.textContent = data.email;
+        infoBox.classList.add('visible');
+        emailButton.href = currentMailtoLink;
+
+        // Save selection to localStorage
+        localStorage.setItem('selectedDistrict', selectedValue);
+        
+        // Update service worker with new district info
+        updateNotificationSchedule();
+    });
+
+    // Restore selection from localStorage
+    const savedDistrict = localStorage.getItem('selectedDistrict');
+    if (savedDistrict && districtData[savedDistrict]) {
+        select.value = savedDistrict;
+        select.dispatchEvent(new Event('change'));
+    }
+
+    // =============================================
+    // PUSH NOTIFICATIONS
+    // =============================================
+    
+    // Check if running as PWA
+    function isRunningStandalone() {
+        return window.matchMedia('(display-mode: standalone)').matches || 
+               window.navigator.standalone === true;
+    }
+
+    // Show PWA banner if not installed
+    if (!isRunningStandalone() && !localStorage.getItem('pwaBannerDismissed')) {
+        pwaBanner.classList.add('visible');
+        setupInstructions.classList.add('visible');
+    }
+
+    // Check if notifications are supported
+    if ('Notification' in window && 'PushManager' in window && 'serviceWorker' in navigator) {
+        notifyBtn.disabled = false;
+        checkNotificationPermission();
+    } else {
+        notifyBtn.textContent = '❌ Notifications not supported on this device';
+        notifyBtn.disabled = true;
+        statusMessage.className = 'status-message error';
+        statusMessage.textContent = 'Your browser does not support push notifications. Please try using Chrome, Safari, or Edge.';
+        statusMessage.style.display = 'block';
+    }
+
+    // Check current permission
+    function checkNotificationPermission() {
+        if (Notification.permission === 'granted') {
+            notifyBtn.textContent = '✅ Notifications Enabled';
+            notifyBtn.style.background = '#34a853';
+            statusMessage.className = 'status-message success';
+            const freq = freqLabels[selectedFrequency] || 'daily';
+            statusMessage.textContent = `You will receive ${freq} reminders at 9:00 AM!`;
+            statusMessage.style.display = 'block';
+            setupInstructions.classList.remove('visible');
+            registerServiceWorker();
+        } else if (Notification.permission === 'denied') {
+            notifyBtn.textContent = '⚠️ Notifications Blocked';
+            notifyBtn.disabled = true;
+            statusMessage.className = 'status-message error';
+            statusMessage.textContent = 'Please enable notifications in your browser settings.';
+            statusMessage.style.display = 'block';
+        } else {
+            notifyBtn.textContent = '🔔 Enable Notifications';
+            notifyBtn.style.background = '#34a853';
+        }
+    }
+
+    // Enable notifications
+    notifyBtn.addEventListener('click', async function() {
+        if (Notification.permission === 'denied') {
+            statusMessage.className = 'status-message error';
+            statusMessage.textContent = 'Notifications are blocked. Please enable them in your browser settings.';
+            statusMessage.style.display = 'block';
+            return;
+        }
+
+        if (Notification.permission === 'granted') {
+            statusMessage.className = 'status-message info';
+            statusMessage.textContent = 'Notifications are already enabled!';
+            statusMessage.style.display = 'block';
+            return;
+        }
+
+        try {
+            const permission = await Notification.requestPermission();
+            
+            if (permission === 'granted') {
+                // Register service worker
+                await registerServiceWorker();
+                
+                notifyBtn.textContent = '✅ Notifications Enabled';
+                notifyBtn.style.background = '#34a853';
+                const freq = freqLabels[selectedFrequency] || 'daily';
+                statusMessage.className = 'status-message success';
+                statusMessage.textContent = `✅ You will receive ${freq} reminders at 9:00 AM!`;
+                statusMessage.style.display = 'block';
+                setupInstructions.classList.remove('visible');
+                pwaBanner.classList.remove('visible');
+                localStorage.setItem('pwaBannerDismissed', 'true');
+                
+                // Schedule the notification with chosen frequency
+                scheduleNotificationWithFrequency();
+            } else {
+                statusMessage.className = 'status-message error';
+                statusMessage.textContent = 'You denied notification permissions. You can enable them later in your browser settings.';
+                statusMessage.style.display = 'block';
+            }
+        } catch (error) {
+            console.error('Error requesting notification permission:', error);
+            statusMessage.className = 'status-message error';
+            statusMessage.textContent = 'An error occurred. Please try again.';
+            statusMessage.style.display = 'block';
+        }
+    });
+
+    // Register Service Worker
+    async function registerServiceWorker() {
+        try {
+            // Unregister any existing service workers to avoid conflicts
+            const registrations = await navigator.serviceWorker.getRegistrations();
+            for (const registration of registrations) {
+                await registration.unregister();
+            }
+            
+            const registration = await navigator.serviceWorker.register('sw.js', {
+                scope: '/'
+            });
+            console.log('Service Worker registered:', registration);
+            
+            // Wait for the service worker to be ready
+            await navigator.serviceWorker.ready;
+            
+            // Send initialization message to service worker
+            if (navigator.serviceWorker.controller) {
+                navigator.serviceWorker.controller.postMessage({
+                    type: 'init',
+                    district: currentData ? currentData.district : '1',
+                    frequency: selectedFrequency
+                });
+            }
+            
+            return registration;
+        } catch (error) {
+            console.error('Service Worker registration failed:', error);
+            throw error;
+        }
+    }
+
+    // Schedule notification with selected frequency
+    function scheduleNotificationWithFrequency() {
+        if (!('serviceWorker' in navigator) || !navigator.serviceWorker.controller) {
+            console.log('Service worker not ready, retrying in 2 seconds...');
+            setTimeout(scheduleNotificationWithFrequency, 2000);
+            return;
+        }
+        
+        // Send message to service worker to schedule notification
+        navigator.serviceWorker.controller.postMessage({
+            type: 'schedule',
+            district: currentData ? currentData.district : '1',
+            email: currentData ? currentData.email : '',
+            name: currentData ? currentData.name : '',
+            frequency: selectedFrequency
+        });
+        
+        console.log(`Notification scheduled with frequency: ${selectedFrequency}`);
+    }
+
+    // Update notification schedule (when frequency changes)
+    function updateNotificationSchedule() {
+        if (Notification.permission === 'granted' && navigator.serviceWorker.controller) {
+            navigator.serviceWorker.controller.postMessage({
+                type: 'update_schedule',
+                district: currentData ? currentData.district : '1',
+                email: currentData ? currentData.email : '',
+                name: currentData ? currentData.name : '',
+                frequency: selectedFrequency
+            });
+            console.log(`Notification schedule updated to: ${selectedFrequency}`);
+            
+            const freq = freqLabels[selectedFrequency] || 'daily';
+            statusMessage.className = 'status-message success';
+            statusMessage.textContent = `✅ Updated! You will receive ${freq} reminders.`;
+            statusMessage.style.display = 'block';
+        }
+    }
+
+    // If service worker sends a message back
+    navigator.serviceWorker.addEventListener('message', function(event) {
+        console.log('Message from service worker:', event.data);
+        
+        if (event.data.type === 'notification_sent') {
+            statusMessage.className = 'status-message success';
+            statusMessage.textContent = '🔔 Reminder sent!';
+            statusMessage.style.display = 'block';
+        }
+        
+        if (event.data.type === 'schedule_updated') {
+            const freq = freqLabels[event.data.frequency] || 'daily';
+            statusMessage.className = 'status-message success';
+            statusMessage.textContent = `✅ Schedule updated! You will receive ${freq} reminders.`;
+            statusMessage.style.display = 'block';
+        }
+    });
+
+    // Check if service worker is already controlling the page
+    if (navigator.serviceWorker.controller) {
+        console.log('Service worker is already active');
+        if (Notification.permission === 'granted') {
+            scheduleNotificationWithFrequency();
+        }
+    }
+
+    // Handle service worker updates
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!refreshing) {
+            refreshing = true;
+            window.location.reload();
+        }
+    });
+
+    // =============================================
+    // NOTIFICATION CLICK HANDLING
+    // =============================================
+    if (window.location.search.includes('action=send')) {
+        setTimeout(() => {
+            emailButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            emailButton.style.animation = 'pulse 1s ease-in-out 3';
+        }, 500);
+    }
+
+    // Add pulse animation
+    const styleSheet = document.createElement('style');
+    styleSheet.textContent = `
+        @keyframes pulse {
+            0% { transform: scale(1); background: #007aff; }
+            50% { transform: scale(1.05); background: #005bbf; }
+            100% { transform: scale(1); background: #007aff; }
+        }
+    `;
+    document.head.appendChild(styleSheet);
+
+    // =============================================
+    // DETECT INSTALLED PWA
+    // =============================================
+    if (isRunningStandalone()) {
+        pwaBanner.style.display = 'none';
+        setupInstructions.classList.remove('visible');
+    }
+
+    console.log('📧 Email Your Councilmember Tool loaded');
+    console.log('📍 Running as PWA:', isRunningStandalone());
+    console.log('🔔 Notification permission:', Notification.permission);
+    console.log('📅 Frequency:', selectedFrequency);
+</script>
+
+</body>
+</html>
