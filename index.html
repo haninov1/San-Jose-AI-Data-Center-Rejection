@@ -6,9 +6,9 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Email Your Rep">
-    <meta name="theme-color" content="#007aff">
+    <meta name="theme-color" content="#4a6a8a">
     <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📧</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%234a6a8a'>✉</text></svg>">
     <title>Email Your San Jose Councilmember</title>
     <style>
         * {
@@ -17,126 +17,164 @@
             box-sizing: border-box;
         }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f5f5f5;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #e8e4e0;
             padding: 20px;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            color: #3a3a3a;
         }
         .container {
-            max-width: 600px;
+            max-width: 650px;
             width: 100%;
-            background: white;
-            border-radius: 20px;
-            padding: 40px 24px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            background: #f5f2ef;
+            border-radius: 16px;
+            padding: 40px 28px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 1px solid #e0dbd6;
         }
         h1 {
-            color: #1a1a1a;
+            color: #3a3a3a;
             font-size: 28px;
             margin-bottom: 4px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
         }
         .subtitle {
-            color: #666;
-            margin-bottom: 25px;
-            font-size: 16px;
+            color: #5a5a5a;
+            margin-bottom: 28px;
+            font-size: 17px;
+            line-height: 1.5;
+        }
+        .subtitle strong {
+            color: #4a6a8a;
+            font-weight: 600;
         }
         label {
             display: block;
             font-weight: 600;
             margin-bottom: 8px;
-            color: #333;
-            font-size: 15px;
+            color: #4a4a4a;
+            font-size: 16px;
         }
         select {
             width: 100%;
-            padding: 14px;
-            font-size: 16px;
-            border: 2px solid #ddd;
-            border-radius: 12px;
-            background: white;
+            padding: 14px 16px;
+            font-size: 17px;
+            border: 2px solid #d5cec8;
+            border-radius: 10px;
+            background: #fcfaf8;
             appearance: none;
             cursor: pointer;
             margin-bottom: 20px;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%23666'/%3E%3C/svg%3E");
+            color: #3a3a3a;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14'%3E%3Cpath d='M7 10L2 5h10z' fill='%236a6a6a'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 14px center;
+            background-position: right 16px center;
         }
         select:focus {
             outline: none;
-            border-color: #007aff;
+            border-color: #6a8aaa;
+            box-shadow: 0 0 0 3px rgba(74, 106, 138, 0.15);
         }
         .info-box {
-            background: #f8f9fa;
+            background: #f0ece8;
             border-radius: 12px;
-            padding: 20px;
+            padding: 20px 24px;
             margin: 20px 0;
             display: none;
+            border: 1px solid #e0dbd6;
         }
         .info-box.visible {
             display: block;
         }
         .info-box h3 {
-            color: #1a1a1a;
+            color: #3a3a3a;
             margin-bottom: 4px;
+            font-size: 20px;
+            font-weight: 600;
         }
         .info-box .email {
-            color: #007aff;
-            font-size: 14px;
+            color: #4a6a8a;
+            font-size: 16px;
             word-break: break-all;
+            font-weight: 500;
+        }
+        .info-box .rep-label {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #5a5a5a;
+        }
+        .rep-badge {
+            display: inline-block;
+            background: #dce8f0;
+            color: #3a5a7a;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
         }
         .email-button {
             display: inline-block;
             width: 100%;
-            padding: 16px;
-            background: #007aff;
-            color: white;
+            padding: 16px 20px;
+            background: #4a6a8a;
+            color: #fcfaf8;
             text-align: center;
             text-decoration: none;
-            border-radius: 12px;
+            border-radius: 10px;
             font-weight: 600;
-            font-size: 18px;
-            margin-top: 15px;
+            font-size: 19px;
+            margin-top: 16px;
             transition: background 0.2s;
+            border: none;
+            cursor: pointer;
         }
         .email-button:hover {
-            background: #005bbf;
+            background: #3a5a7a;
+        }
+        .email-button:focus {
+            outline: 3px solid #6a8aaa;
+            outline-offset: 2px;
         }
         .note {
-            color: #888;
-            font-size: 13px;
-            margin-top: 15px;
+            color: #7a7a7a;
+            font-size: 14px;
+            margin-top: 14px;
             text-align: center;
+            line-height: 1.4;
         }
         
         /* Notification Section */
         .notification-section {
-            margin-top: 25px;
-            padding-top: 25px;
-            border-top: 1px solid #eee;
+            margin-top: 28px;
+            padding-top: 28px;
+            border-top: 2px solid #e0dbd6;
         }
         .notification-section h4 {
-            color: #1a1a1a;
+            color: #3a3a3a;
             margin-bottom: 6px;
-            font-size: 16px;
+            font-size: 18px;
+            font-weight: 600;
         }
         .notification-section .sub-label {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 15px;
+            color: #5a5a5a;
+            font-size: 15px;
+            margin-bottom: 16px;
+            line-height: 1.5;
         }
         
         /* Frequency Selection */
         .frequency-group {
-            margin: 12px 0 16px 0;
+            margin: 14px 0 18px 0;
         }
         .frequency-group label {
             font-weight: 500;
-            font-size: 14px;
-            color: #555;
-            margin-bottom: 6px;
+            font-size: 15px;
+            color: #4a4a4a;
+            margin-bottom: 8px;
         }
         .frequency-options {
             display: flex;
@@ -145,135 +183,135 @@
         }
         .frequency-option {
             flex: 1;
-            min-width: 80px;
-            padding: 12px 8px;
-            border: 2px solid #ddd;
+            min-width: 90px;
+            padding: 12px 10px;
+            border: 2px solid #d5cec8;
             border-radius: 10px;
-            background: white;
+            background: #fcfaf8;
             text-align: center;
             cursor: pointer;
             transition: all 0.2s;
             font-weight: 500;
-            font-size: 14px;
-            color: #555;
+            font-size: 15px;
+            color: #5a5a5a;
+            user-select: none;
         }
         .frequency-option:hover {
-            border-color: #007aff;
-            background: #f0f7ff;
+            border-color: #6a8aaa;
+            background: #f0f0ee;
         }
         .frequency-option.selected {
-            border-color: #007aff;
-            background: #007aff;
-            color: white;
+            border-color: #4a6a8a;
+            background: #4a6a8a;
+            color: #fcfaf8;
         }
         .frequency-option .sub {
             display: block;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 400;
             opacity: 0.7;
-            margin-top: 2px;
+            margin-top: 3px;
         }
         .frequency-option.selected .sub {
-            opacity: 0.9;
+            opacity: 0.85;
         }
         
         .notification-btn {
             display: inline-block;
             width: 100%;
-            padding: 14px;
-            background: #34a853;
-            color: white;
+            padding: 15px 20px;
+            background: #5a8a6a;
+            color: #fcfaf8;
             text-align: center;
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
             font-weight: 600;
-            font-size: 16px;
+            font-size: 17px;
             cursor: pointer;
             transition: background 0.2s;
             margin-top: 8px;
         }
         .notification-btn:hover {
-            background: #2d8f47;
+            background: #4a7a5a;
         }
         .notification-btn:disabled {
-            background: #ccc;
+            background: #b0b0b0;
             cursor: not-allowed;
         }
-        .notification-btn.secondary {
-            background: #ff6b35;
-        }
-        .notification-btn.secondary:hover {
-            background: #e55a2b;
+        .notification-btn:focus {
+            outline: 3px solid #6a8aaa;
+            outline-offset: 2px;
         }
         
         .status-message {
-            margin-top: 10px;
-            padding: 12px;
+            margin-top: 12px;
+            padding: 14px 16px;
             border-radius: 10px;
-            font-size: 14px;
+            font-size: 15px;
             display: none;
+            line-height: 1.4;
         }
         .status-message.success {
             display: block;
-            background: #e8f5e9;
-            color: #2e7d32;
+            background: #e0ece4;
+            color: #2a5a3a;
+            border: 1px solid #c0d8ca;
         }
         .status-message.error {
             display: block;
-            background: #ffebee;
-            color: #c62828;
+            background: #f0e4e4;
+            color: #7a3a3a;
+            border: 1px solid #e0c8c8;
         }
         .status-message.info {
             display: block;
-            background: #e3f2fd;
-            color: #005bbf;
+            background: #e0e8f0;
+            color: #3a5a7a;
+            border: 1px solid #c8d8e8;
         }
         .status-message.warning {
             display: block;
-            background: #fff3e0;
-            color: #e65100;
-        }
-        
-        .badge {
-            display: inline-block;
-            background: #e8f5e9;
-            color: #2e7d32;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
+            background: #f0ece0;
+            color: #6a5a2a;
+            border: 1px solid #e0d8c8;
         }
         
         .footer {
-            margin-top: 30px;
+            margin-top: 32px;
             padding-top: 20px;
-            border-top: 1px solid #eee;
+            border-top: 2px solid #e0dbd6;
             text-align: center;
-            color: #999;
-            font-size: 13px;
+            color: #8a8a8a;
+            font-size: 14px;
+            line-height: 1.5;
         }
         
         .setup-instructions {
-            background: #f0f7ff;
+            background: #f0ece8;
             border-radius: 10px;
-            padding: 16px;
+            padding: 16px 20px;
             margin: 12px 0;
-            font-size: 14px;
+            font-size: 15px;
             display: none;
+            border: 1px solid #e0dbd6;
         }
         .setup-instructions.visible {
             display: block;
         }
+        .setup-instructions strong {
+            color: #3a3a3a;
+        }
         .setup-instructions ol {
-            padding-left: 20px;
-            margin: 8px 0;
+            padding-left: 22px;
+            margin: 10px 0 6px 0;
         }
         .setup-instructions li {
-            margin: 6px 0;
+            margin: 8px 0;
+            line-height: 1.5;
         }
         
         /* Mobile responsive */
-        @media (max-width: 480px) {
+        @media (max-width: 500px) {
             .container {
                 padding: 24px 16px;
             }
@@ -282,26 +320,35 @@
             }
             .frequency-option {
                 min-width: 70px;
-                padding: 10px 6px;
-                font-size: 13px;
+                padding: 10px 8px;
+                font-size: 14px;
+            }
+            .email-button {
+                font-size: 17px;
+                padding: 14px 16px;
+            }
+            .notification-btn {
+                font-size: 16px;
+                padding: 14px 16px;
             }
         }
         
         .pwa-banner {
-            background: #fff8e1;
+            background: #f0ece0;
             border-radius: 12px;
-            padding: 14px 16px;
-            margin: 15px 0 10px 0;
-            font-size: 14px;
-            color: #e65100;
+            padding: 14px 18px;
+            margin: 15px 0 12px 0;
+            font-size: 15px;
+            color: #5a4a2a;
             display: none;
-            border: 1px solid #ffecb3;
+            border: 1px solid #e0d8c8;
+            line-height: 1.5;
         }
         .pwa-banner.visible {
             display: block;
         }
         .pwa-banner strong {
-            color: #bf360c;
+            color: #3a3a3a;
         }
         .pwa-banner .icon {
             font-size: 20px;
@@ -309,30 +356,73 @@
         }
         
         .frequency-display {
-            background: #e8f5e9;
+            background: #e0ece4;
             border-radius: 10px;
             padding: 12px 16px;
             margin: 12px 0;
-            font-size: 14px;
-            color: #2e7d32;
+            font-size: 15px;
+            color: #2a5a3a;
             display: none;
+            border: 1px solid #c0d8ca;
+            line-height: 1.5;
         }
         .frequency-display.visible {
             display: block;
+        }
+        .frequency-display strong {
+            color: #1a4a2a;
+        }
+        
+        /* Accessibility: Focus indicators */
+        a:focus, button:focus, select:focus {
+            outline: 3px solid #4a6a8a;
+            outline-offset: 2px;
+        }
+        
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            .container {
+                border: 3px solid #3a3a3a;
+            }
+            .info-box {
+                border: 2px solid #3a3a3a;
+            }
+            .frequency-option {
+                border: 2px solid #3a3a3a;
+            }
+            .frequency-option.selected {
+                background: #3a3a3a;
+                color: white;
+            }
+        }
+        
+        /* Reduced motion preference */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        /* Large text support */
+        @media (prefers-accessibility: reduce-transparency) {
+            .container {
+                background: #f5f2ef;
+            }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>📧 Email Your Councilmember</h1>
-    <p class="subtitle">Tell San Jose: <strong>No AI Data Centers</strong></p>
+    <h1>Email Your Councilmember</h1>
+    <p class="subtitle">Tell San Jose: <strong>No AI Data Centers in our city</strong></p>
 
     <!-- PWA Install Banner -->
     <div id="pwaBanner" class="pwa-banner">
         <span class="icon">📱</span>
-        <strong>Get Daily Reminders!</strong> 
-        Tap <strong>Share</strong> → <strong>Add to Home Screen</strong> to get notifications.
+        <strong>Get daily reminders!</strong> 
+        Tap <strong>Share</strong> then <strong>Add to Home Screen</strong> to enable notifications.
     </div>
 
     <!-- District Selection -->
@@ -355,18 +445,18 @@
     <div id="infoBox" class="info-box">
         <h3 id="repName">Councilmember Name</h3>
         <p class="email" id="repEmail">email@example.com</p>
-        <p style="margin-top: 8px; font-size: 14px; color: #555;">
-            <span class="badge">✅ Your Representative</span>
+        <p class="rep-label">
+            <span class="rep-badge">Your Representative</span>
         </p>
 
         <!-- Email Button -->
-        <a href="#" id="emailButton" class="email-button">✉️ Send Email Now</a>
-        <p class="note">This will open your default email app. Just tap Send!</p>
+        <a href="#" id="emailButton" class="email-button">Send Email Now</a>
+        <p class="note">This will open your default email app. Just tap Send.</p>
     </div>
 
     <!-- Notification Section -->
     <div class="notification-section" id="notificationSection">
-        <h4>🔔 Get Reminders</h4>
+        <h4>Get Reminders</h4>
         <p class="sub-label">Choose how often you want to be reminded to send this email.</p>
 
         <!-- Frequency Selection -->
@@ -390,37 +480,37 @@
 
         <!-- Frequency Display (shows selected) -->
         <div id="frequencyDisplay" class="frequency-display">
-            🔔 You will receive <strong id="freqLabel">daily</strong> reminders at <strong>9:00 AM</strong>.
+            You will receive <strong id="freqLabel">daily</strong> reminders at <strong>9:00 AM</strong>.
         </div>
 
         <!-- Setup Instructions -->
         <div id="setupInstructions" class="setup-instructions">
-            <strong>📱 To get reminders:</strong>
+            <strong>To get reminders:</strong>
             <ol>
-                <li>Tap <strong>Share</strong> <span id="shareIcon">⬆️</span> → <strong>Add to Home Screen</strong></li>
+                <li>Tap <strong>Share</strong> then <strong>Add to Home Screen</strong></li>
                 <li>Open the app from your Home Screen</li>
                 <li>Tap <strong>"Enable Notifications"</strong> below</li>
             </ol>
-            <p style="font-size:13px; color:#666; margin-top:8px;">
-                ⚠️ You must complete step 1 for notifications to work on iPhone.
+            <p style="font-size:14px; color:#6a6a6a; margin-top:10px;">
+                Note: You must complete step 1 for notifications to work on iPhone.
             </p>
         </div>
 
         <button id="notifyBtn" class="notification-btn" disabled>
-            🔔 Enable Notifications
+            Enable Notifications
         </button>
         
         <div id="statusMessage" class="status-message"></div>
         
         <!-- Reminder info -->
-        <div style="margin-top: 12px; font-size: 13px; color: #888; text-align: center;">
+        <div style="margin-top: 14px; font-size: 14px; color: #7a7a7a; text-align: center; line-height: 1.5;">
             Notifications arrive at <strong>9:00 AM</strong> on your chosen schedule.
             Tap them to open this page with your email ready to send.
         </div>
     </div>
 
     <div class="footer">
-        Made for San Jose residents • No account needed • Free to use
+        Made for San Jose residents  |  No account needed  |  Free to use
     </div>
 </div>
 
@@ -473,18 +563,12 @@
     // =============================================
     frequencyOptions.forEach(option => {
         option.addEventListener('click', function() {
-            // Remove selected from all
             frequencyOptions.forEach(opt => opt.classList.remove('selected'));
-            // Add selected to clicked
             this.classList.add('selected');
-            // Store frequency
             selectedFrequency = this.dataset.value;
-            // Update display
             updateFrequencyDisplay();
-            // Save to localStorage
             localStorage.setItem('notificationFrequency', selectedFrequency);
             
-            // If notifications are already enabled, update the schedule
             if (Notification.permission === 'granted') {
                 updateNotificationSchedule();
             }
@@ -552,10 +636,7 @@
         infoBox.classList.add('visible');
         emailButton.href = currentMailtoLink;
 
-        // Save selection to localStorage
         localStorage.setItem('selectedDistrict', selectedValue);
-        
-        // Update service worker with new district info
         updateNotificationSchedule();
     });
 
@@ -570,54 +651,49 @@
     // PUSH NOTIFICATIONS
     // =============================================
     
-    // Check if running as PWA
     function isRunningStandalone() {
         return window.matchMedia('(display-mode: standalone)').matches || 
                window.navigator.standalone === true;
     }
 
-    // Show PWA banner if not installed
     if (!isRunningStandalone() && !localStorage.getItem('pwaBannerDismissed')) {
         pwaBanner.classList.add('visible');
         setupInstructions.classList.add('visible');
     }
 
-    // Check if notifications are supported
     if ('Notification' in window && 'PushManager' in window && 'serviceWorker' in navigator) {
         notifyBtn.disabled = false;
         checkNotificationPermission();
     } else {
-        notifyBtn.textContent = '❌ Notifications not supported on this device';
+        notifyBtn.textContent = 'Notifications not supported on this device';
         notifyBtn.disabled = true;
         statusMessage.className = 'status-message error';
         statusMessage.textContent = 'Your browser does not support push notifications. Please try using Chrome, Safari, or Edge.';
         statusMessage.style.display = 'block';
     }
 
-    // Check current permission
     function checkNotificationPermission() {
         if (Notification.permission === 'granted') {
-            notifyBtn.textContent = '✅ Notifications Enabled';
-            notifyBtn.style.background = '#34a853';
+            notifyBtn.textContent = 'Notifications Enabled';
+            notifyBtn.style.background = '#5a8a6a';
             statusMessage.className = 'status-message success';
             const freq = freqLabels[selectedFrequency] || 'daily';
-            statusMessage.textContent = `You will receive ${freq} reminders at 9:00 AM!`;
+            statusMessage.textContent = 'You will receive ' + freq + ' reminders at 9:00 AM.';
             statusMessage.style.display = 'block';
             setupInstructions.classList.remove('visible');
             registerServiceWorker();
         } else if (Notification.permission === 'denied') {
-            notifyBtn.textContent = '⚠️ Notifications Blocked';
+            notifyBtn.textContent = 'Notifications Blocked';
             notifyBtn.disabled = true;
             statusMessage.className = 'status-message error';
             statusMessage.textContent = 'Please enable notifications in your browser settings.';
             statusMessage.style.display = 'block';
         } else {
-            notifyBtn.textContent = '🔔 Enable Notifications';
-            notifyBtn.style.background = '#34a853';
+            notifyBtn.textContent = 'Enable Notifications';
+            notifyBtn.style.background = '#5a8a6a';
         }
     }
 
-    // Enable notifications
     notifyBtn.addEventListener('click', async function() {
         if (Notification.permission === 'denied') {
             statusMessage.className = 'status-message error';
@@ -628,7 +704,7 @@
 
         if (Notification.permission === 'granted') {
             statusMessage.className = 'status-message info';
-            statusMessage.textContent = 'Notifications are already enabled!';
+            statusMessage.textContent = 'Notifications are already enabled.';
             statusMessage.style.display = 'block';
             return;
         }
@@ -637,20 +713,18 @@
             const permission = await Notification.requestPermission();
             
             if (permission === 'granted') {
-                // Register service worker
                 await registerServiceWorker();
                 
-                notifyBtn.textContent = '✅ Notifications Enabled';
-                notifyBtn.style.background = '#34a853';
+                notifyBtn.textContent = 'Notifications Enabled';
+                notifyBtn.style.background = '#5a8a6a';
                 const freq = freqLabels[selectedFrequency] || 'daily';
                 statusMessage.className = 'status-message success';
-                statusMessage.textContent = `✅ You will receive ${freq} reminders at 9:00 AM!`;
+                statusMessage.textContent = 'You will receive ' + freq + ' reminders at 9:00 AM.';
                 statusMessage.style.display = 'block';
                 setupInstructions.classList.remove('visible');
                 pwaBanner.classList.remove('visible');
                 localStorage.setItem('pwaBannerDismissed', 'true');
                 
-                // Schedule the notification with chosen frequency
                 scheduleNotificationWithFrequency();
             } else {
                 statusMessage.className = 'status-message error';
@@ -665,10 +739,8 @@
         }
     });
 
-    // Register Service Worker
     async function registerServiceWorker() {
         try {
-            // Unregister any existing service workers to avoid conflicts
             const registrations = await navigator.serviceWorker.getRegistrations();
             for (const registration of registrations) {
                 await registration.unregister();
@@ -679,10 +751,8 @@
             });
             console.log('Service Worker registered:', registration);
             
-            // Wait for the service worker to be ready
             await navigator.serviceWorker.ready;
             
-            // Send initialization message to service worker
             if (navigator.serviceWorker.controller) {
                 navigator.serviceWorker.controller.postMessage({
                     type: 'init',
@@ -698,7 +768,6 @@
         }
     }
 
-    // Schedule notification with selected frequency
     function scheduleNotificationWithFrequency() {
         if (!('serviceWorker' in navigator) || !navigator.serviceWorker.controller) {
             console.log('Service worker not ready, retrying in 2 seconds...');
@@ -706,7 +775,6 @@
             return;
         }
         
-        // Send message to service worker to schedule notification
         navigator.serviceWorker.controller.postMessage({
             type: 'schedule',
             district: currentData ? currentData.district : '1',
@@ -715,10 +783,9 @@
             frequency: selectedFrequency
         });
         
-        console.log(`Notification scheduled with frequency: ${selectedFrequency}`);
+        console.log('Notification scheduled with frequency:', selectedFrequency);
     }
 
-    // Update notification schedule (when frequency changes)
     function updateNotificationSchedule() {
         if (Notification.permission === 'granted' && navigator.serviceWorker.controller) {
             navigator.serviceWorker.controller.postMessage({
@@ -728,34 +795,32 @@
                 name: currentData ? currentData.name : '',
                 frequency: selectedFrequency
             });
-            console.log(`Notification schedule updated to: ${selectedFrequency}`);
+            console.log('Notification schedule updated to:', selectedFrequency);
             
             const freq = freqLabels[selectedFrequency] || 'daily';
             statusMessage.className = 'status-message success';
-            statusMessage.textContent = `✅ Updated! You will receive ${freq} reminders.`;
+            statusMessage.textContent = 'Updated! You will receive ' + freq + ' reminders.';
             statusMessage.style.display = 'block';
         }
     }
 
-    // If service worker sends a message back
     navigator.serviceWorker.addEventListener('message', function(event) {
         console.log('Message from service worker:', event.data);
         
         if (event.data.type === 'notification_sent') {
             statusMessage.className = 'status-message success';
-            statusMessage.textContent = '🔔 Reminder sent!';
+            statusMessage.textContent = 'Reminder sent!';
             statusMessage.style.display = 'block';
         }
         
         if (event.data.type === 'schedule_updated') {
             const freq = freqLabels[event.data.frequency] || 'daily';
             statusMessage.className = 'status-message success';
-            statusMessage.textContent = `✅ Schedule updated! You will receive ${freq} reminders.`;
+            statusMessage.textContent = 'Schedule updated! You will receive ' + freq + ' reminders.';
             statusMessage.style.display = 'block';
         }
     });
 
-    // Check if service worker is already controlling the page
     if (navigator.serviceWorker.controller) {
         console.log('Service worker is already active');
         if (Notification.permission === 'granted') {
@@ -763,7 +828,6 @@
         }
     }
 
-    // Handle service worker updates
     let refreshing = false;
     navigator.serviceWorker.addEventListener('controllerchange', () => {
         if (!refreshing) {
@@ -778,20 +842,13 @@
     if (window.location.search.includes('action=send')) {
         setTimeout(() => {
             emailButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            emailButton.style.animation = 'pulse 1s ease-in-out 3';
+            emailButton.style.outline = '3px solid #4a6a8a';
+            emailButton.style.outlineOffset = '4px';
+            setTimeout(() => {
+                emailButton.style.outline = 'none';
+            }, 3000);
         }, 500);
     }
-
-    // Add pulse animation
-    const styleSheet = document.createElement('style');
-    styleSheet.textContent = `
-        @keyframes pulse {
-            0% { transform: scale(1); background: #007aff; }
-            50% { transform: scale(1.05); background: #005bbf; }
-            100% { transform: scale(1); background: #007aff; }
-        }
-    `;
-    document.head.appendChild(styleSheet);
 
     // =============================================
     // DETECT INSTALLED PWA
@@ -801,10 +858,10 @@
         setupInstructions.classList.remove('visible');
     }
 
-    console.log('📧 Email Your Councilmember Tool loaded');
-    console.log('📍 Running as PWA:', isRunningStandalone());
-    console.log('🔔 Notification permission:', Notification.permission);
-    console.log('📅 Frequency:', selectedFrequency);
+    console.log('Email Your Councilmember Tool loaded');
+    console.log('Running as PWA:', isRunningStandalone());
+    console.log('Notification permission:', Notification.permission);
+    console.log('Frequency:', selectedFrequency);
 </script>
 
 </body>

@@ -4,14 +4,12 @@
 
 const CACHE_NAME = 'sanjose-email-cache-v2';
 
-// Files to cache
 const urlsToCache = [
     '/',
     '/index.html',
     '/manifest.json'
 ];
 
-// Install event - cache files
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME)
@@ -23,7 +21,6 @@ self.addEventListener('install', (event) => {
     );
 });
 
-// Activate event - clean old caches
 self.addEventListener('activate', (event) => {
     event.waitUntil(
         Promise.all([
@@ -39,7 +36,6 @@ self.addEventListener('activate', (event) => {
             })
         ]).then(() => {
             console.log('Service worker activated, scheduling notifications');
-            // Start scheduling after activation
             setTimeout(() => {
                 scheduleNextNotification();
             }, 3000);
@@ -47,7 +43,6 @@ self.addEventListener('activate', (event) => {
     );
 });
 
-// Fetch event - serve from cache or network
 self.addEventListener('fetch', (event) => {
     event.respondWith(
         caches.match(event.request)
@@ -61,15 +56,13 @@ self.addEventListener('fetch', (event) => {
 // NOTIFICATION STATE
 // =============================================
 
-// Store user preferences
 let userPreferences = {
     district: '1',
     email: '',
     name: '',
-    frequency: 'daily' // daily, weekly, monthly
+    frequency: 'daily'
 };
 
-// Track if we've already sent a notification today
 let lastNotificationDate = null;
 
 // =============================================
@@ -93,11 +86,7 @@ self.addEventListener('message', (event) => {
         userPreferences.frequency = data.frequency || 'daily';
         
         console.log('Notification scheduled with frequency:', userPreferences.frequency);
-        
-        // Send a test notification
         sendTestNotification();
-        
-        // Reschedule
         scheduleNextNotification();
     }
     
@@ -109,14 +98,12 @@ self.addEventListener('message', (event) => {
         
         console.log('Schedule updated to:', userPreferences.frequency);
         
-        // Clear existing schedule and reschedule
         if (self.scheduledTimeout) {
             clearTimeout(self.scheduledTimeout);
             self.scheduledTimeout = null;
         }
         scheduleNextNotification();
         
-        // Notify the page
         self.clients.matchAll().then((clients) => {
             clients.forEach((client) => {
                 client.postMessage({
@@ -132,7 +119,6 @@ self.addEventListener('message', (event) => {
 // SEND NOTIFICATIONS
 // =============================================
 
-// Send a test notification
 function sendTestNotification() {
     const freqLabels = {
         'daily': 'daily',
@@ -142,9 +128,9 @@ function sendTestNotification() {
     const freqText = freqLabels[userPreferences.frequency] || 'daily';
     
     const options = {
-        body: `✅ Daily reminders are set! You will receive a notification ${freqText} at 9:00 AM.`,
-        icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">📧</text></svg>',
-        badge: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">📧</text></svg>',
+        body: 'Reminders are set! You will receive a notification ' + freqText + ' at 9:00 AM.',
+        icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90" fill="%234a6a8a">✉</text></svg>',
+        badge: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90" fill="%234a6a8a">✉</text></svg>',
         vibrate: [200, 100, 200],
         requireInteraction: true,
         data: {
@@ -154,7 +140,7 @@ function sendTestNotification() {
         actions: [
             {
                 action: 'open',
-                title: '📧 Send Email Now'
+                title: 'Send Email Now'
             },
             {
                 action: 'dismiss',
@@ -163,7 +149,7 @@ function sendTestNotification() {
         ]
     };
 
-    self.registration.showNotification('📧 Reminders Enabled', options)
+    self.registration.showNotification('Reminders Enabled', options)
         .then(() => {
             console.log('Test notification sent');
         })
@@ -172,7 +158,6 @@ function sendTestNotification() {
         });
 }
 
-// Send the scheduled notification
 function sendScheduledNotification() {
     const district = userPreferences.district || '1';
     const name = userPreferences.name || 'Your Councilmember';
@@ -184,9 +169,9 @@ function sendScheduledNotification() {
     const freqText = freqLabels[userPreferences.frequency] || 'daily';
     
     const options = {
-        body: `Time to email ${name} in District ${district}! Tap to send now. (${freqText} reminder)`,
-        icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">📧</text></svg>',
-        badge: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">📧</text></svg>',
+        body: 'Time to email ' + name + ' in District ' + district + '. Tap to send now. (' + freqText + ' reminder)',
+        icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90" fill="%234a6a8a">✉</text></svg>',
+        badge: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90" fill="%234a6a8a">✉</text></svg>',
         vibrate: [200, 100, 200, 100, 200],
         requireInteraction: true,
         data: {
@@ -197,11 +182,11 @@ function sendScheduledNotification() {
         actions: [
             {
                 action: 'open',
-                title: '📧 Send Email Now'
+                title: 'Send Email Now'
             },
             {
                 action: 'snooze',
-                title: '⏰ Remind in 1 Hour'
+                title: 'Remind in 1 Hour'
             },
             {
                 action: 'dismiss',
@@ -212,14 +197,13 @@ function sendScheduledNotification() {
         renotify: true
     };
 
-    const title = `📧 Email Your Councilmember - District ${district}`;
+    const title = 'Email Your Councilmember - District ' + district;
     
     self.registration.showNotification(title, options)
         .then(() => {
             console.log('Scheduled notification sent');
             lastNotificationDate = new Date().toDateString();
             
-            // Notify the page
             self.clients.matchAll().then((clients) => {
                 clients.forEach((client) => {
                     client.postMessage({
@@ -238,13 +222,11 @@ function sendScheduledNotification() {
 // SCHEDULE NOTIFICATIONS
 // =============================================
 
-// Get milliseconds until next scheduled time based on frequency
 function getTimeUntilNextNotification() {
     const now = new Date();
     let target = new Date(now);
     target.setHours(9, 0, 0, 0);
     
-    // If it's past 9:00 AM today, schedule for the next appropriate day
     if (now >= target) {
         const frequency = userPreferences.frequency || 'daily';
         
@@ -258,13 +240,11 @@ function getTimeUntilNextNotification() {
     }
     
     const delay = target.getTime() - now.getTime();
-    console.log(`Next ${userPreferences.frequency} notification in ${Math.round(delay / 60000)} minutes at ${target}`);
+    console.log('Next ' + userPreferences.frequency + ' notification in ' + Math.round(delay / 60000) + ' minutes at ' + target);
     return delay;
 }
 
-// Schedule the next notification
 function scheduleNextNotification() {
-    // Clear any existing timeout
     if (self.scheduledTimeout) {
         clearTimeout(self.scheduledTimeout);
         self.scheduledTimeout = null;
@@ -272,17 +252,13 @@ function scheduleNextNotification() {
     
     const delay = getTimeUntilNextNotification();
     
-    // Don't schedule if delay is too long (safety)
     if (delay > 0) {
         self.scheduledTimeout = setTimeout(() => {
-            // Send the notification
             sendScheduledNotification();
-            
-            // Schedule the next one based on frequency
             scheduleNextNotification();
         }, delay);
         
-        console.log(`Next ${userPreferences.frequency} notification scheduled in ${Math.round(delay / 60000)} minutes`);
+        console.log('Next ' + userPreferences.frequency + ' notification scheduled in ' + Math.round(delay / 60000) + ' minutes');
     } else {
         console.warn('Invalid delay, rescheduling in 1 minute');
         self.scheduledTimeout = setTimeout(scheduleNextNotification, 60000);
@@ -303,7 +279,6 @@ self.addEventListener('notificationclick', (event) => {
     console.log('Notification clicked:', action, data);
 
     if (action === 'open' || !action) {
-        // Open the app
         event.waitUntil(
             self.clients.matchAll({
                 type: 'window',
@@ -320,13 +295,12 @@ self.addEventListener('notificationclick', (event) => {
             })
         );
     } else if (action === 'snooze') {
-        // Snooze - remind in 1 hour
         event.waitUntil(
             new Promise((resolve) => {
                 setTimeout(() => {
                     sendScheduledNotification();
                     resolve();
-                }, 3600000); // 1 hour
+                }, 3600000);
             })
         );
     } else if (action === 'dismiss') {
@@ -335,18 +309,18 @@ self.addEventListener('notificationclick', (event) => {
 });
 
 // =============================================
-// HANDLE PUSH EVENTS (for future use)
+// HANDLE PUSH EVENTS
 // =============================================
 
 self.addEventListener('push', (event) => {
     console.log('Push event received:', event);
     
     let notificationData = {
-        title: '📧 Email Your Councilmember',
+        title: 'Email Your Councilmember',
         options: {
-            body: `Don't forget to email your council member today!`,
-            icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">📧</text></svg>',
-            badge: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">📧</text></svg>',
+            body: 'Don\'t forget to email your council member today.',
+            icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90" fill="%234a6a8a">✉</text></svg>',
+            badge: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90" fill="%234a6a8a">✉</text></svg>',
             requireInteraction: true,
             data: {
                 type: 'push',
@@ -355,7 +329,7 @@ self.addEventListener('push', (event) => {
             actions: [
                 {
                     action: 'open',
-                    title: '📧 Send Email Now'
+                    title: 'Send Email Now'
                 }
             ]
         }
@@ -367,7 +341,6 @@ self.addEventListener('push', (event) => {
             if (data.title) notificationData.title = data.title;
             if (data.body) notificationData.options.body = data.body;
         } catch (e) {
-            // If data is plain text
             notificationData.options.body = event.data.text() || notificationData.options.body;
         }
     }
@@ -378,7 +351,7 @@ self.addEventListener('push', (event) => {
 });
 
 // =============================================
-// BACKGROUND SYNC (for when offline)
+// BACKGROUND SYNC
 // =============================================
 
 self.addEventListener('sync', (event) => {
@@ -389,4 +362,4 @@ self.addEventListener('sync', (event) => {
     }
 });
 
-console.log('📧 Service Worker loaded with frequency support');
+console.log('Service Worker loaded with frequency support');
